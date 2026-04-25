@@ -1,0 +1,99 @@
+Project Description
+Your group will create a small, working project that demonstrates how multiple industry tools work together in
+one workflow.
+Jenkins is required. Beyond Jenkins, your group must use at least two additional course tools, for a minimum of
+three tools total.
+Your project should focus on a realistic workflow. For example, you could utilize GitHub + Jenkins + Docker + a
+small Flask application, with optional MongoDB or Nginx components.
+Requirements
+• Groups of 2 to 5 students.
+• A working GitHub repository for the project.
+• A working Jenkins implementation that performs meaningful automation.
+• At least three course tools used together in one workflow.
+• A working final system that can be executed by the grader.
+• Evidence of collaboration and each student’s contribution.
+• One person from each group must input themselves and the other members in the group registration form
+available at the following link: https://usf.az1.qualtrics.com/jfe/form/SV_74i5ZKQIhz9qkaW
+Required Jenkins Component
+Your Jenkins work must do more than print messages; it should automate real project work.
+At minimum, your Jenkins implementation must include these stages. Some examples include Checkout, Build,
+Verify, and Run/Deploy.
+A Jenkins contribution may include writing or improving a Jenkinsfile, configuring and using a freestyle job where
+appropriate, setting up triggers, configuring agents, handling credentials correctly, or debugging a broken
+pipeline and documenting the fix.
+Division of Tasks
+Each student must make a meaningful contribution to Jenkins and to at least one other tool or technical area.
+Task division should be visible through either commit history, pull requests, screenshots, issue/task tracking, or
+professional Slack communication.
+Group Deliverables
+• One GitHub repository link.
+• One short report that explains the architecture, tools used, setup steps, how the workflow runs, and clear
+demo screenshots.
+• One Jenkinsfile or equivalent Jenkins job configuration evidence.
+Individual Deliverables
+• A brief contribution statement per student explaining exactly what you did. Each student will submit their
+own.
+• Evidence of your work, such as commits, pull requests, screenshots, logs, or other project artifacts.
+Collaboration Expectations
+Every student should appear in at least once in the collaboration evidence.
+Professional Slack Communication (If Used)
+• Use respectful, workplace-appropriate language.
+• Keep messages concise, clear, and task-focused.
+• Use threads, acknowledgments, and status updates when coordinating work.
+• Do not spam, insult teammates, or leave major decisions undocumented.
+Recommended Project Direction
+The safest and most manageable option is to extend earlier coursework into a small deployment workflow. You
+are not expected to submit Example: store a Flask project in GitHub, build it with Docker, run it with Docker
+Compose, automate the workflow with Jenkins, and optionally add MongoDB, Nginx, Terraform, or AWS.
+Rubric (100 points)
+Category Points What is being graded Full-credit expectations
+Tool integration and
+technical scope 40 How well the chosen tools work together
+Uses at least 3 tools in one
+coherent workflow; scope
+is realistic and functional.
+Jenkins implementation
+Counts as a
+separate
+assignment for
+Jenkins
+Quality and substance of the Jenkins work
+Jenkins performs actual
+automation and includes
+acceptable stages
+(examples mentioned
+above)
+Working system and
+demonstration 25 Whether the final system actually runs and is
+demonstrated clearly (via report screenshots)
+The project works, is
+demonstrated clearly, and
+the evidence matches the
+claims.
+Collaboration and
+professionalism 10 Visible teamwork and professional conduct
+Each student contributed;
+evidence is visible through
+commits, history, Slack, or
+similar artifacts;
+communication remained
+professional.
+Documentation and
+reproducibility 25 Clarity of the report, runbook, and architecture
+diagram
+Another person could
+understand the project
+and reasonably follow the
+setup/workflow.
+Individual contribution
+evidence
+Points
+evaluated on an Whether each student proves their own role Each student submits a
+clear contribution
+individual basis statement with supporting
+evidence.
+Bottom line: Keep the project very practical. You are not expected to submit a marketable product (or
+anything close). The ultimate aim is that you connect the functionalities of the tools you select within a
+realistic workflow, and do so in a collaborative manner. While it is not expected, the hopes are that you begin
+the foundations of a project you can build upon moving forward and potentially showcase on your resume to
+prospective employers.

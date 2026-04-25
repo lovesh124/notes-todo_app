@@ -1,6 +1,6 @@
 # Notes & Todo REST API
 
-This is our final project for the course. It's a simple Notes and Todo REST API built to demonstrate continuous integration and deployment workflows. 
+ This is a Notes and Todo REST API built to demonstrate continuous integration and deployment workflows. 
 
 ## Tech Stack
 * **Backend:** Flask (Python)
