@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/lovesh124/notes-todo_app.git'
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'pip install -r requirements.txt'
