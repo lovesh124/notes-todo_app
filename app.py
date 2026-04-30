@@ -20,7 +20,13 @@ def index():
 def list_notes():
     db = get_database()
     collection = db[COLLECTION_NAME]
-    notes = [serialize_note(note) for note in collection.find()]
+    
+    query = {}
+    tag = request.args.get("tag")
+    if tag:
+        query["tags"] = tag
+        
+    notes = [serialize_note(note) for note in collection.find(query)]
     return jsonify(notes), 200
 
 
@@ -34,6 +40,7 @@ def create_note():
         "title": data.get("title"),
         "content": data.get("content", ""),
         "done": bool(data.get("done", False)),
+        "tags": data.get("tags", []),
     }
     
     db = get_database()
@@ -74,6 +81,8 @@ def update_note(note_id: str):
         update_data["content"] = data["content"]
     if "done" in data:
         update_data["done"] = bool(data["done"])
+    if "tags" in data and isinstance(data["tags"], list):
+        update_data["tags"] = data["tags"]
         
     try:
         result = collection.update_one({"_id": ObjectId(note_id)}, {"$set": update_data})

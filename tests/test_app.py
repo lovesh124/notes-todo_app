@@ -140,3 +140,30 @@ def test_create_note_full_fields(client):
     assert data["title"] == "All Fields"
     assert data["content"] == "Testing 123"
     assert data["done"] is True
+
+def test_create_note_with_tags(client):
+    """Verify creating a note with tags."""
+    res = client.post("/notes", json={"title": "Grocery", "tags": ["shopping", "urgent"]})
+    assert res.status_code == 201
+    data = res.get_json()
+    assert "shopping" in data["tags"]
+
+def test_filter_notes_by_tag(client):
+    """Verify GET /notes?tag=... works."""
+    client.post("/notes", json={"title": "Work Note", "tags": ["work", "important"]})
+    client.post("/notes", json={"title": "Home Note", "tags": ["home"]})
+    
+    res = client.get("/notes?tag=work")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert len(data) == 1
+    assert data[0]["title"] == "Work Note"
+
+def test_update_note_tags(client):
+    """Verify updating tags for an existing note."""
+    post_res = client.post("/notes", json={"title": "Idea", "tags": ["draft"]})
+    note_id = post_res.get_json()["id"]
+    
+    res = client.put(f"/notes/{note_id}", json={"tags": ["final"]})
+    assert res.status_code == 200
+    assert res.get_json()["tags"] == ["final"]
