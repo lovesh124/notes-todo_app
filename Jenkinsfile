@@ -13,12 +13,18 @@ pipeline {
 
       steps {
         sh '''
-          python --version
+          python3 --version
+
+          python3 -m venv .venv
+          . .venv/bin/activate
+
           pip install --upgrade pip
           pip install -r requirements.txt
+
           pytest --junitxml=results.xml
         '''
       }
+
       post {
         always {
           junit 'results.xml'
@@ -34,7 +40,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'docker-compose up -d --build'
+        sh 'docker compose up -d --build'
       }
     }
   }
