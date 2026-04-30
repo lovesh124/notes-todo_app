@@ -3,6 +3,15 @@ pipeline {
 
   stages {
 
+    stage('Debug Environment') {
+      steps {
+        sh 'docker --version'
+        sh 'docker-compose --version'
+        sh 'docker compose version'
+      }
+    }
+
+
     stage('Test') {
       agent {
         docker {
