@@ -1,28 +1,32 @@
 pipeline {
   agent any
+
   stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
 
     stage('Test') {
+      agent {
+        docker {
+          image 'python:3.10'
+          args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+      }
       steps {
         sh '''
-            python3 -m venv .venv
-            . .venv/bin/activate
-            pip install -r requirements.txt
-            pytest --junitxml=results.xml
+          python --version
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pytest --junitxml=results.xml
         '''
-
-        junit 'results.xml' 
+      }
+      post {
+        always {
+          junit 'results.xml'
+        }
       }
     }
 
     stage('Build Docker') {
       steps {
-
         sh 'docker build -t notes-todo:latest .'
       }
     }
