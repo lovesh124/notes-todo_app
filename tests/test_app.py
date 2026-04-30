@@ -62,3 +62,24 @@ def test_delete_note(client):
 def test_create_without_title(client):
     res = client.post("/notes", json={"content": "no title"})
     assert res.status_code == 400
+
+
+def test_get_nonexistent_note(client):
+    """Verify 404 for missing resources"""
+    res = client.get("/notes/999")
+    assert res.status_code == 404
+
+def test_update_nonexistent_note(client):
+    """Verify 404 when updating missing resources"""
+    res = client.put("/notes/999", json={"title": "Ghost"})
+    assert res.status_code == 404
+
+def test_delete_nonexistent_note(client):
+    """Verify 404 when deleting missing resources"""
+    res = client.delete("/notes/999")
+    assert res.status_code == 404
+
+def test_malformed_json_post(client):
+    """Verify 400 for bad payloads"""
+    res = client.post("/notes", data="not json", content_type='application/json')
+    assert res.status_code == 400

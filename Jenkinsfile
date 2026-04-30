@@ -8,13 +8,17 @@ pipeline {
     }
 
     stage('Test') {
-      steps {
-        // Install dependencies and run pytest; make the Verify/Test stage meaningful
-        sh 'python3 -m pip install --upgrade pip'
-        sh 'pip3 install -r requirements.txt'
-        sh 'pytest -q'
-      }
+    steps {
+        sh '''
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pytest --junitxml=results.xml
+        '''
+        // This makes the stage "Meaningful" by visualizing results in Jenkins
+        junit 'results.xml' 
     }
+}
 
     stage('Build Docker') {
       when {
