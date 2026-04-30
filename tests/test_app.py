@@ -107,3 +107,36 @@ def test_malformed_json_post(client):
     """Verify 400 for bad payloads"""
     res = client.post("/notes", data="not json", content_type='application/json')
     assert res.status_code == 400
+
+def test_index_health_check(client):
+    """Verify the root health endpoint works."""
+    res = client.get("/")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["status"] == "ok"
+    assert "Notes & Todo API" in data["message"]
+
+def test_partial_update_note(client):
+    """Verify that updating one field doesn't overwrite others."""
+    # Create note
+    post_res = client.post("/notes", json={"title": "Old Title", "content": "Keep this", "done": False})
+    note_id = post_res.get_json()["id"]
+    
+    # Update only 'done' to True
+    res = client.put(f"/notes/{note_id}", json={"done": True})
+    assert res.status_code == 200
+    
+    # Check that other fields are untouched
+    data = res.get_json()
+    assert data["done"] is True
+    assert data["title"] == "Old Title"
+    assert data["content"] == "Keep this"
+
+def test_create_note_full_fields(client):
+    """Verify all fields correctly insert."""
+    res = client.post("/notes", json={"title": "All Fields", "content": "Testing 123", "done": True})
+    assert res.status_code == 201
+    data = res.get_json()
+    assert data["title"] == "All Fields"
+    assert data["content"] == "Testing 123"
+    assert data["done"] is True
