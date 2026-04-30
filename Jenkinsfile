@@ -40,7 +40,15 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'docker-compose up -d --build'
+        // Person 3: Docker Deployment & Verification
+        sh '''
+          docker-compose down || true
+          docker-compose up -d --build
+          echo "Waiting for services to start..."
+          sleep 10
+          echo "Verifying application is up..."
+          curl -f http://localhost:5000/
+        '''
       }
     }
   }
