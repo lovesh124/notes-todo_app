@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from db import get_database, COLLECTION_NAME
 from bson.objectid import ObjectId
 
+
 app = Flask(__name__)
 
 def serialize_note(note):
