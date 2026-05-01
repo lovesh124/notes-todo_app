@@ -13,6 +13,7 @@ def serialize_note(note):
     note["id"] = str(note.pop("_id"))
     return note
 
+
 @app.route("/")
 def index():
     return jsonify({"status": "ok", "message": "Notes & Todo API"})
