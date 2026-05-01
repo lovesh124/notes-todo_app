@@ -22,7 +22,7 @@ def create_note():
     global NEXT_ID
     data = request.get_json()
     if not data or "title" not in data:
-        return jsonify({"error": "title is required"}), 400
+        return jsonify({"error": "title required"}), 400
 
     note = {
         "id": NEXT_ID,
