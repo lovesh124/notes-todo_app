@@ -3,6 +3,7 @@ from db import get_database, COLLECTION_NAME
 from bson.objectid import ObjectId
 from datetime import datetime, timezone
 
+
 app = Flask(__name__)
 
 def serialize_note(note):

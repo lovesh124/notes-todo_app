@@ -3,6 +3,14 @@ pipeline {
 
   stages {
 
+    stage('Debug Environment') {
+      steps {
+        sh 'docker --version'
+        sh 'docker-compose --version'
+      }
+    }
+
+
     stage('Test') {
       agent {
         docker {
@@ -32,24 +40,19 @@ pipeline {
       }
     }
 
-    stage('Build Docker') {
-      steps {
-        sh 'docker build -t notes-todo:latest .'
-      }
-    }
-
     stage('Deploy') {
-      steps {
-        // Person 3: Docker Deployment & Verification
-        sh '''
-          docker-compose down || true
-          docker-compose up -d --build
-          echo "Waiting for services to start..."
-          sleep 10
-          echo "Verifying application is up..."
-          curl -f http://localhost:5000/
-        '''
-      }
-    }
+  steps {
+    sh '''
+      pwd
+      ls -la
+      docker-compose down || true
+      docker-compose build --no-cache
+      docker-compose up -d --force-recreate
+      sleep 10
+      docker-compose logs --tail=100 web
+      curl -f http://172.17.0.1:5000/
+    '''
+  }
+}
   }
 }
