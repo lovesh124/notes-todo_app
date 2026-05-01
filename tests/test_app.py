@@ -167,3 +167,43 @@ def test_update_note_tags(client):
     res = client.put(f"/notes/{note_id}", json={"tags": ["final"]})
     assert res.status_code == 200
     assert res.get_json()["tags"] == ["final"]
+
+def test_note_timestamps(client):
+    """Verify created_at and updated_at are set."""
+    res = client.post("/notes", json={"title": "Timestamps"})
+    assert res.status_code == 201
+    data = res.get_json()
+    assert "created_at" in data
+    assert "updated_at" in data
+    
+    # Update note to check updated_at changes
+    note_id = data["id"]
+    put_res = client.put(f"/notes/{note_id}", json={"title": "Timestamps Updated"})
+    assert put_res.status_code == 200
+    update_data = put_res.get_json()
+    assert update_data["updated_at"] != update_data["created_at"]
+    assert update_data["created_at"] == data["created_at"]
+
+def test_due_date_and_overdue(client):
+    """Verify due_date is saved and overdue query fetching works."""
+    from datetime import datetime, timezone, timedelta
+    
+    now = datetime.now(timezone.utc)
+    past = (now - timedelta(days=2)).isoformat()
+    future = (now + timedelta(days=2)).isoformat()
+    
+    # Create notes
+    client.post("/notes", json={"title": "Overdue Note", "due_date": past})
+    client.post("/notes", json={"title": "Future Note", "due_date": future})
+    client.post("/notes", json={"title": "No Due Date"})
+    
+    res = client.get("/notes?overdue=true")
+    assert res.status_code == 200
+    data = res.get_json()
+    
+    # Depending on previous test state, we might have multiple, but filter to ones we just made
+    overdue_notes = [n for n in data if n["title"] == "Overdue Note"]
+    future_notes = [n for n in data if n["title"] == "Future Note"]
+    
+    assert len(overdue_notes) == 1
+    assert len(future_notes) == 0

@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from db import get_database, COLLECTION_NAME
 from bson.objectid import ObjectId
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 
@@ -26,6 +27,11 @@ def list_notes():
     if tag:
         query["tags"] = tag
         
+    overdue = request.args.get("overdue")
+    if overdue and overdue.lower() == "true":
+        now = datetime.now(timezone.utc).isoformat()
+        query["due_date"] = {"$ne": None, "$lt": now}
+        
     notes = [serialize_note(note) for note in collection.find(query)]
     return jsonify(notes), 200
 
@@ -36,11 +42,15 @@ def create_note():
     if not data or "title" not in data:
         return jsonify({"error": "title is required"}), 400
 
+    now = datetime.now(timezone.utc).isoformat()
     note = {
         "title": data.get("title"),
         "content": data.get("content", ""),
         "done": bool(data.get("done", False)),
         "tags": data.get("tags", []),
+        "created_at": now,
+        "updated_at": now,
+        "due_date": data.get("due_date", None)
     }
     
     db = get_database()
@@ -83,6 +93,10 @@ def update_note(note_id: str):
         update_data["done"] = bool(data["done"])
     if "tags" in data and isinstance(data["tags"], list):
         update_data["tags"] = data["tags"]
+    if "due_date" in data:
+        update_data["due_date"] = data["due_date"]
+        
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
         
     try:
         result = collection.update_one({"_id": ObjectId(note_id)}, {"$set": update_data})
