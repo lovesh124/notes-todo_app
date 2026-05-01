@@ -3,6 +3,14 @@ pipeline {
 
   stages {
 
+    stage('Debug Environment') {
+      steps {
+        sh 'docker --version'
+        sh 'docker-compose --version'
+      }
+    }
+
+
     stage('Test') {
       agent {
         docker {
@@ -29,12 +37,6 @@ pipeline {
         always {
           junit 'results.xml'
         }
-      }
-    }
-
-    stage('Build Docker') {
-      steps {
-        sh 'docker build -t notes-todo:latest .'
       }
     }
 
