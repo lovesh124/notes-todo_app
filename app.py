@@ -13,7 +13,7 @@ def serialize_note(note):
 
 @app.route("/")
 def index():
-    return jsonify({"status": "ok", "message": "Notes & Todo API"})
+    return jsonify({"status": "ok", "message": "Notes and Todo API"})
 
 
 @app.route("/notes", methods=["GET"])
