@@ -41,21 +41,18 @@ pipeline {
     }
 
     stage('Deploy') {
-      steps {
-        sh '''
-          echo "Workspace: $(pwd)"
-          ls -la
-          docker-compose down || true
-          docker-compose build --no-cache
-          docker-compose up -d --force-recreate
-          echo "Waiting for services to start..."
-          sleep 10
-          echo "Web logs:"
-          docker-compose logs --tail=100 web
-          echo "Verifying application is up..."
-          curl -f http://localhost:5000/
-        '''
-      }
-    }
+  steps {
+    sh '''
+      pwd
+      ls -la
+      docker-compose down || true
+      docker-compose build --no-cache
+      docker-compose up -d --force-recreate
+      sleep 10
+      docker-compose logs --tail=100 web
+      curl -f http://localhost:5000/
+    '''
+  }
+}
   }
 }
