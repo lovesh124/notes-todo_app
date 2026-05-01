@@ -50,7 +50,7 @@ pipeline {
       docker-compose up -d --force-recreate
       sleep 10
       docker-compose logs --tail=100 web
-      curl -f http://localhost:5000/
+      curl -f http://172.17.0.1:5000/
     '''
   }
 }
