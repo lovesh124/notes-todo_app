@@ -7,7 +7,6 @@ pipeline {
       steps {
         sh 'docker --version'
         sh 'docker-compose --version'
-        sh 'docker compose version'
       }
     }
 
@@ -38,12 +37,6 @@ pipeline {
         always {
           junit 'results.xml'
         }
-      }
-    }
-
-    stage('Build Docker') {
-      steps {
-        sh 'docker build -t notes-todo:latest .'
       }
     }
 
